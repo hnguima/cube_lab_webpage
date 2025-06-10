@@ -1,0 +1,89 @@
+// Form component styles
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--space-md);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  transition: var(--transition-colors);
+  font-family: var(--font-sans);
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: var(--font-sans);
+  line-height: var(--line-height-relaxed);
+  
+  &--large {
+    min-height: 200px;
+  }
+}
+
+// Checkbox styling
+.form-checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.form-checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  margin-top: 0.125rem; // Small adjustment to align with first line of text
+  flex-shrink: 0; // Prevent checkbox from shrinking
+}
+
+.form-checkbox-label {
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  cursor: pointer;
+  line-height: var(--line-height-normal);
+}
+
+// Error styling
+.form-error {
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+  margin-top: var(--space-xs);
+}
+
+// Form actions styling
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: var(--border-width) solid var(--border-color);
+}

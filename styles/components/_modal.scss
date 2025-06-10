@@ -1,0 +1,140 @@
+// Modal component styles
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  background-color: rgba(0, 0, 0, 0.5);
+  
+  &__content {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    width: 100%;
+    max-width: 48rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    border: var(--border-width) solid var(--border-color);
+  }
+  
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: var(--border-width) solid var(--border-color);
+  }
+  
+  &__title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+  }
+  
+  &__close {
+    padding: var(--space-sm);
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-colors);
+    font-size: var(--text-lg);
+    line-height: 1;
+    
+    &:hover {
+      background-color: var(--color-gray-100);
+      color: var(--text-primary);
+    }
+  }
+}
+
+// Modal body and footer styles
+.modal {
+  &__body {
+    margin-bottom: var(--space-xl);
+  }
+  
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-md);
+    padding-top: var(--space-lg);
+    border-top: var(--border-width) solid var(--border-color);
+  }
+}
+
+// Enhanced form styling for modals
+.modal .form-group {
+  margin-bottom: var(--space-lg);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.modal .form-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+// Tech stack input styling
+.tech-stack-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-card);
+  min-height: 44px;
+  
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-blue-100);
+    color: var(--color-blue-700);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    
+    &__remove {
+      background: none;
+      border: none;
+      color: var(--color-blue-600);
+      cursor: pointer;
+      padding: 0;
+      font-size: var(--text-xs);
+      
+      &:hover {
+        color: var(--color-danger);
+      }
+    }
+  }
+  
+  &__input {
+    border: none;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    min-width: 120px;
+    padding: var(--space-xs);
+    font-size: var(--text-sm);
+    
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+}
