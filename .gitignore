@@ -13,6 +13,10 @@
 # testing
 /coverage
 
+/test-results/
+/playwright-report/
+/.nyc_output
+
 # next.js
 /.next/
 /out/
@@ -39,3 +43,46 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma
+/prisma/dev.db
+/prisma/dev.db-journal
+/prisma/migrations/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+logs
+*.log
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Temporary folders
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
