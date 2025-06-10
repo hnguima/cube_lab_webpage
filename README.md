@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Cube Lab - Developer Portfolio Website
 
-## Getting Started
+A modern developer portfolio website built with Next.js 15, TypeScript, Tailwind CSS, and Prisma database integration.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Dynamic Homepage** - Hero section, featured projects, and skills showcase
+- **Admin Interface** - Full CRUD operations for managing projects
+- **Project Detail Pages** - Individual pages for each project with markdown content
+- **Database Integration** - Prisma ORM with SQLite for data persistence
+- **Responsive Design** - Mobile-first approach with Tailwind CSS
+- **Skills Showcase** - Categorized skills with proficiency levels
+
+## 🏗️ Tech Stack
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Prisma ORM** - Database management and queries
+- **SQLite** - Local development database
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. **Clone and install**
+   ```bash
+   git clone <repository-url>
+   cd cube_lab_webpage
+   npm install
+   ```
+
+2. **Set up database**
+   ```bash
+   npx prisma generate
+   npm run db:seed
+   ```
+
+3. **Start development**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open browser**
+   ```
+   http://localhost:3000
+   ```
+
+## 📁 Key Files
+
+```
+app/
+├── page.tsx              # Homepage
+├── admin/page.tsx        # Project management
+├── api/projects/         # Project API endpoints
+└── projects/[slug]/      # Dynamic project pages
+
+lib/
+├── useProjects.ts        # Project management hook
+└── mockData.ts          # Sample data
+
+prisma/
+├── schema.prisma        # Database schema
+└── seed.ts             # Database seeding
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run db:seed      # Seed database with sample data
+npm run db:studio    # Open Prisma Studio
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 API Endpoints
 
-## Learn More
+- `GET /api/projects` - Get all projects
+- `POST /api/projects` - Create new project
+- `GET /api/projects/[slug]` - Get project by slug
+- `PUT /api/projects/[slug]` - Update project
+- `DELETE /api/projects/[slug]` - Delete project
 
-To learn more about Next.js, take a look at the following resources:
+## 📱 Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Homepage (`/`)** - Hero, featured projects, skills, contact
+- **Admin Panel (`/admin`)** - Project management interface
+- **Project Details (`/projects/[slug]`)** - Individual project pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📋 Current Status
 
-## Deploy on Vercel
+### ✅ Completed
+- [x] Core homepage with dynamic content
+- [x] Database integration with Prisma
+- [x] Admin interface for project management
+- [x] Dynamic project detail pages
+- [x] Skills showcase with proficiency levels
+- [x] Responsive design foundation
+- [x] Complete API routes for CRUD operations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🚧 In Progress
+- [ ] About Me section with timeline
+- [ ] Fixed navigation header
+- [ ] Signature cube design elements
+- [ ] Framer Motion animations
+- [ ] Image upload system
+- [ ] Contact form functionality
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+**Built with ❤️ using Next.js, TypeScript, and modern web technologies**
