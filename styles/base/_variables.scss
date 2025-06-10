@@ -1,0 +1,99 @@
+// Consistent Design System Variables
+:root {
+  // --- CONSISTENT COLOR PALETTE ---
+  
+  // Page Background (Light gray for all pages)
+  --bg-page: #f8fafc;
+  
+  // Card Background (White for ALL cards)
+  --bg-card: #ffffff;
+  
+  // Text Colors
+  --text-primary: #1f2937;    // Dark gray for main text
+  --text-secondary: #6b7280;  // Medium gray for secondary text
+  --text-muted: #9ca3af;      // Light gray for muted text
+  
+  // Border Color
+  --border-color: #e5e7eb;    // Light gray borders
+  
+  // Brand Colors
+  --color-primary: #2563eb;   // Blue for buttons and links
+  --color-success: #16a34a;   // Green for success states
+  --color-warning: #f59e0b;   // Yellow for warnings
+  --color-danger: #dc2626;    // Red for errors
+  
+  // Complete Gray Scale
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  
+  // Blue Scale
+  --color-blue-100: #dbeafe;
+  --color-blue-500: #3b82f6;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  
+  // Spacing
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 5rem;
+  --space-5xl: 6rem;
+  
+  // Typography
+  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-6xl: 3.75rem;
+  
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  // Border Radius
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+  
+  // Shadows
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  // Transitions
+  --transition-fast: 0.15s ease-in-out;
+  --transition-colors: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  --transition-shadow: box-shadow 0.15s ease-in-out;
+  
+  // Z-index
+  --z-dropdown: 10;
+  --z-modal: 50;
+  
+  // Border width
+  --border-width: 1px;
+}
