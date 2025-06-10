@@ -145,11 +145,27 @@ export function useProjects() {
 
   const resetToMockData = async () => {
     try {
-      // This would need a special API endpoint to reset data
-      // For now, we'll just reload the projects
-      await loadProjects();
+      setLoading(true);
+      const response = await fetch('/api/projects/reset', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Reload projects after successful reset
+        await loadProjects();
+        console.log('Database reset to mock data successfully');
+      } else {
+        console.error('Failed to reset database');
+        throw new Error('Failed to reset database');
+      }
     } catch (error) {
       console.error('Error resetting to mock data:', error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 

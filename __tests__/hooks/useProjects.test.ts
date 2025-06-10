@@ -1,5 +1,6 @@
 import { renderHook, waitFor, act } from '@testing-library/react'
 import { useProjects } from '../../lib/useProjects'
+import { mockProjects } from '../../lib/mockData'
 
 // Mock fetch globally
 global.fetch = jest.fn()
@@ -296,5 +297,112 @@ describe('useProjects', () => {
     })
 
     expect(result.current.projects[0].slug).toBe('another-project')
+  })
+
+  it('resets data to mock data', async () => {
+    // Initial projects (different from mock data)
+    const initialProjects = [
+      {
+        id: 999,
+        title: 'Custom Project',
+        slug: 'custom-project',
+        description: 'Custom description',
+        content: 'Custom content',
+        category: 'WEB',
+        techStack: '["Custom Tech"]',
+        githubUrl: 'https://github.com/custom',
+        featured: false,
+        createdAt: '2023-01-01T00:00:00.000Z',
+        updatedAt: '2023-01-01T00:00:00.000Z',
+      },
+    ]
+
+    // Mock projects after reset (based on mock data)
+    const resetProjects = mockProjects.map(project => ({
+      ...project,
+      techStack: JSON.stringify(project.techStack), // API format
+      demoUrl: project.demoUrl || null,
+      createdAt: project.createdAt || '2024-01-01T00:00:00.000Z',
+      updatedAt: project.updatedAt || '2024-01-01T00:00:00.000Z',
+    }))
+
+    // Initial load returns custom projects
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => initialProjects,
+    } as Response)
+
+    const { result } = renderHook(() => useProjects())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    // Verify we start with custom project
+    expect(result.current.projects).toHaveLength(1)
+    expect(result.current.projects[0].title).toBe('Custom Project')
+
+    // Mock reset API call and subsequent reload
+    mockFetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, message: 'Reset successful' }),
+      } as Response) // Reset API response
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => resetProjects,
+      } as Response) // Reload projects response
+
+    await act(async () => {
+      await result.current.resetToMockData()
+    })
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    // Verify projects were reset to mock data
+    expect(result.current.projects).toHaveLength(mockProjects.length)
+    
+    // Check that each mock project is present with correct data
+    mockProjects.forEach(mockProject => {
+      const foundProject = result.current.projects.find(p => p.slug === mockProject.slug)
+      expect(foundProject).toBeDefined()
+      expect(foundProject?.title).toBe(mockProject.title)
+      expect(foundProject?.category).toBe(mockProject.category)
+      expect(foundProject?.featured).toBe(mockProject.featured)
+      expect(foundProject?.techStack).toEqual(mockProject.techStack)
+    })
+
+    // Verify API calls were made correctly
+    expect(mockFetch).toHaveBeenCalledWith('/api/projects/reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  })
+
+  it('handles reset API errors gracefully', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [],
+    } as Response)
+
+    const { result } = renderHook(() => useProjects())
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
+    // Mock failed reset API call
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+    } as Response)
+
+    await act(async () => {
+      await expect(result.current.resetToMockData()).rejects.toThrow('Failed to reset database')
+    })
   })
 })

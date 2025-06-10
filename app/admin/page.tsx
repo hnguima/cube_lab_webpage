@@ -44,8 +44,8 @@ export default function AdminPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl">Loading projects...</div>
+      <div className="admin-page__loading">
+        <div className="loading-text">Loading projects...</div>
       </div>
     );
   }
@@ -149,26 +149,26 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto">
+    <div className="admin-page">
+      <div className="admin-page__container">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Project Management</h1>
-          <div className="flex gap-3">
+        <div className="admin-page__header">
+          <h1 className="admin-page__title">Project Management</h1>
+          <div className="admin-page__actions">
             <button
               onClick={() => {
                 if (confirm('Reset all projects to original mock data? This will delete any custom projects.')) {
                   resetToMockData();
                 }
               }}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="btn btn--secondary"
             >
               <RotateCcw size={20} />
               Reset Data
             </button>
             <button
               onClick={() => setShowForm(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn btn--primary"
             >
               <Plus size={20} />
               Add New Project
@@ -178,25 +178,25 @@ export default function AdminPage() {
 
         {/* Project Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">
+          <div className="modal">
+            <div className="modal__content">
+              <div className="modal__header">
+                <h2 className="modal__title">
                   {editingProject ? 'Edit Project' : 'Add New Project'}
                 </h2>
                 <button
                   onClick={resetForm}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                  className="modal__close"
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form className="form-grid" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+                <div className="form-grid">
                   {/* Title */}
-                  <div>
-                    <label htmlFor="title" className="block text-sm font-medium mb-2">Title *</label>
+                  <div className="form-group">
+                    <label htmlFor="title" className="form-label">Title *</label>
                     <input
                       id="title"
                       type="text"
@@ -204,13 +204,13 @@ export default function AdminPage() {
                       value={formData.title}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                      className="form-input"
                     />
                   </div>
 
                   {/* Slug */}
-                  <div>
-                    <label htmlFor="slug" className="block text-sm font-medium mb-2">Slug *</label>
+                  <div className="form-group">
+                    <label htmlFor="slug" className="form-label">Slug *</label>
                     <input
                       id="slug"
                       type="text"
@@ -218,20 +218,20 @@ export default function AdminPage() {
                       value={formData.slug}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                      className="form-input"
                     />
                   </div>
 
                   {/* Category */}
-                  <div>
-                    <label htmlFor="category" className="block text-sm font-medium mb-2">Category *</label>
+                  <div className="form-group">
+                    <label htmlFor="category" className="form-label">Category *</label>
                     <select
                       id="category"
                       name="category"
                       value={formData.category}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                      className="form-select"
                     >
                       {PROJECT_CATEGORIES.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -240,22 +240,24 @@ export default function AdminPage() {
                   </div>
 
                   {/* Featured */}
-                  <div className="flex items-center">
-                    <input
-                      id="featured"
-                      type="checkbox"
-                      name="featured"
-                      checked={formData.featured}
-                      onChange={handleInputChange}
-                      className="mr-2 w-4 h-4 text-blue-600 focus:ring-blue-500"
-                    />
-                    <label htmlFor="featured" className="text-sm font-medium">Featured Project</label>
+                  <div className="form-group">
+                    <label className="form-label">
+                      <input
+                        id="featured"
+                        type="checkbox"
+                        name="featured"
+                        checked={formData.featured}
+                        onChange={handleInputChange}
+                        className="form-checkbox"
+                      />
+                      Featured Project
+                    </label>
                   </div>
                 </div>
 
                 {/* Description */}
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium mb-2">Description *</label>
+                <div className="form-group">
+                  <label htmlFor="description" className="form-label">Description *</label>
                   <textarea
                     id="description"
                     name="description"
@@ -263,13 +265,13 @@ export default function AdminPage() {
                     onChange={handleInputChange}
                     required
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                    className="form-textarea"
                   />
                 </div>
 
                 {/* Tech Stack */}
-                <div>
-                  <label htmlFor="techStack" className="block text-sm font-medium mb-2">Tech Stack (comma-separated)</label>
+                <div className="form-group">
+                  <label htmlFor="techStack" className="form-label">Tech Stack (comma-separated)</label>
                   <input
                     id="techStack"
                     type="text"
@@ -277,41 +279,41 @@ export default function AdminPage() {
                     value={formData.techStack}
                     onChange={handleInputChange}
                     placeholder="React, TypeScript, Node.js"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                    className="form-input"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="form-grid">
                   {/* GitHub URL */}
-                  <div>
-                    <label htmlFor="githubUrl" className="block text-sm font-medium mb-2">GitHub URL</label>
+                  <div className="form-group">
+                    <label htmlFor="githubUrl" className="form-label">GitHub URL</label>
                     <input
                       id="githubUrl"
                       type="url"
                       name="githubUrl"
                       value={formData.githubUrl}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                      className="form-input"
                     />
                   </div>
 
                   {/* Demo URL */}
-                  <div>
-                    <label htmlFor="demoUrl" className="block text-sm font-medium mb-2">Demo URL</label>
+                  <div className="form-group">
+                    <label htmlFor="demoUrl" className="form-label">Demo URL</label>
                     <input
                       id="demoUrl"
                       type="url"
                       name="demoUrl"
                       value={formData.demoUrl}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700"
+                      className="form-input"
                     />
                   </div>
                 </div>
 
                 {/* Content */}
-                <div>
-                  <label htmlFor="content" className="block text-sm font-medium mb-2">Content (Markdown) *</label>
+                <div className="form-group">
+                  <label htmlFor="content" className="form-label">Content (Markdown) *</label>
                   <textarea
                     id="content"
                     name="content"
@@ -333,15 +335,15 @@ What problems did you solve?
 
 ## Results
 What was the outcome?"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 font-mono text-sm"
+                    className="form-textarea form-textarea--large font-mono text-sm"
                   />
                 </div>
 
                 {/* Form Actions */}
-                <div className="flex gap-4 pt-4">
+                <div className="form-actions">
                   <button
                     type="submit"
-                    className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="btn btn--primary"
                   >
                     <Save size={20} />
                     {editingProject ? 'Update Project' : 'Create Project'}
@@ -349,7 +351,7 @@ What was the outcome?"
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="btn btn--outline"
                   >
                     Cancel
                   </button>
@@ -360,52 +362,45 @@ What was the outcome?"
         )}
 
         {/* Projects List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="admin-page__projects-grid">
           {projects.map(project => (
-            <div key={project.id} data-testid="project-item" className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      project.category === 'HARDWARE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                      project.category === 'WEB' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                      'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-                    }`}>
-                      {project.category}
+            <div key={project.id} data-testid="project-item" className="project-card">
+              <div className="project-card__header">
+                <div className="project-card__badges">
+                  <span className={`project-card__badge project-card__badge--${project.category.toLowerCase()}`}>
+                    {project.category}
+                  </span>
+                  {project.featured && (
+                    <span className="project-card__badge project-card__badge--featured">
+                      Featured
                     </span>
-                    {project.featured && (
-                      <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{project.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {project.techStack.slice(0, 3).map((tech, index) => (
-                      <span key={index} className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
-                        {tech}
-                      </span>
-                    ))}
-                    {project.techStack.length > 3 && (
-                      <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">
-                        +{project.techStack.length - 3} more
-                      </span>
-                    )}
-                  </div>
+                  )}
+                </div>
+                <h3 className="project-card__title">{project.title}</h3>
+                <p className="project-card__description">
+                  {project.description}
+                </p>
+                <div className="project-card__tech-stack">
+                  {project.techStack.slice(0, 3).map((tech, index) => (
+                    <span key={index} className="project-card__tech-tag">
+                      {tech}
+                    </span>
+                  ))}
+                  {project.techStack.length > 3 && (
+                    <span className="project-card__tech-tag">
+                      +{project.techStack.length - 3} more
+                    </span>
+                  )}
                 </div>
               </div>
               
-              <div className="flex justify-between items-center">
-                <div className="flex gap-2">
+              <div className="project-card__footer">
+                <div className="project-card__links">
                   {project.githubUrl && (
                     <a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
                     >
                       GitHub
                     </a>
@@ -415,24 +410,24 @@ What was the outcome?"
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-green-600 dark:text-green-400 hover:underline"
+                      className="link--success"
                     >
                       Demo
                     </a>
                   )}
                 </div>
-                <div className="flex gap-2">
+                <div className="project-card__actions">
                   <button
                     onClick={() => handleEdit(project)}
                     aria-label={`Edit ${project.title}`}
-                    className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded"
+                    className="project-card__action-btn project-card__action-btn--edit"
                   >
                     <Edit size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(project.id)}
                     aria-label={`Delete ${project.title}`}
-                    className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
+                    className="project-card__action-btn project-card__action-btn--delete"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -443,11 +438,11 @@ What was the outcome?"
         </div>
 
         {projects.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 dark:text-gray-400 mb-4">No projects found</p>
+          <div className="admin-page__empty-state">
+            <p>No projects found</p>
             <button
               onClick={() => setShowForm(true)}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn btn--primary btn--lg"
             >
               Create Your First Project
             </button>
