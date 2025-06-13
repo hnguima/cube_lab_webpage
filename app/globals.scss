@@ -1,11 +1,12 @@
 // Import design system and components
 @import "../styles/base/variables";
 @import "../styles/base/reset";
-@import "../styles/utilities/utilities";
+// @import "../styles/utilities/utilities";
 @import "../styles/components/button";
 @import "../styles/components/form";
 @import "../styles/components/card";
 @import "../styles/components/modal";
+@import "../styles/components/markdown";
 @import "../styles/layout/layout";
 @import "../styles/pages/admin";
 @import "../styles/pages/home";

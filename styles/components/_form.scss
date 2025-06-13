@@ -23,13 +23,13 @@
   font-size: var(--text-base);
   transition: var(--transition-colors);
   font-family: var(--font-sans);
-  
+
   &:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
-  
+
   &::placeholder {
     color: var(--text-muted);
   }
@@ -40,42 +40,34 @@
   min-height: 120px;
   font-family: var(--font-sans);
   line-height: var(--line-height-relaxed);
-  
+
   &--large {
     min-height: 200px;
   }
 }
 
-// Checkbox styling
-.form-checkbox-group {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-lg);
+// Form select styling with custom arrow
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  appearance: none;
 }
 
-.form-checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  accent-color: var(--color-primary);
-  cursor: pointer;
-  margin-top: 0.125rem; // Small adjustment to align with first line of text
-  flex-shrink: 0; // Prevent checkbox from shrinking
-}
+// Form checkbox styling - Enhanced to force square shape
+/* MOVED TO END OF FILE TO OVERRIDE GLOBAL RESETS */
 
-.form-checkbox-label {
-  font-size: var(--text-base);
-  font-weight: var(--font-medium);
-  color: var(--text-primary);
-  cursor: pointer;
-  line-height: var(--line-height-normal);
-}
+// Form grid for layout
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
 
-// Error styling
-.form-error {
-  color: var(--color-danger);
-  font-size: var(--text-sm);
-  margin-top: var(--space-xs);
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 // Form actions styling
@@ -86,4 +78,50 @@
   margin-top: var(--space-xl);
   padding-top: var(--space-lg);
   border-top: var(--border-width) solid var(--border-color);
+}
+
+// CHECKBOX OVERRIDE - Must come last to override global input resets
+input[type="checkbox"].form-checkbox,
+.form-checkbox[type="checkbox"] {
+  /* Override global input styles for checkboxes */
+  padding: 0 !important;
+  margin-right: var(--space-xs);
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 4px !important;
+  vertical-align: middle;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: var(--bg-card) !important;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s ease, background-color 0.2s ease !important;
+
+  &:checked {
+    background-color: var(--color-primary) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd' /%3E%3C/svg%3E") !important;
+    background-size: 12px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-color: var(--color-primary) !important;
+    padding: 0 !important;
+  }
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
+  }
+
+  &:hover {
+    border-color: var(--color-primary) !important;
+  }
 }
