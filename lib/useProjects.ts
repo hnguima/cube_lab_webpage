@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export interface ProjectImage {
   id: string;
@@ -33,35 +33,39 @@ export function useProjects() {
 
   const loadProjects = async () => {
     try {
-      const response = await fetch('/api/projects');
+      const response = await fetch("/api/projects");
       if (response.ok) {
         const data = await response.json();
         // Transform the data to match our interface
-        const transformedProjects = data.map((project: any) => ({
-          ...project,
-          techStack: JSON.parse(project.techStack || '[]'),
-          createdAt: project.createdAt || new Date().toISOString(),
-          updatedAt: project.updatedAt || new Date().toISOString(),
-        }));
+        const transformedProjects = data.map(
+          (project: Record<string, unknown>) => ({
+            ...project,
+            techStack: JSON.parse((project.techStack as string) || "[]"),
+            createdAt: project.createdAt || new Date().toISOString(),
+            updatedAt: project.updatedAt || new Date().toISOString(),
+          })
+        );
         setProjects(transformedProjects);
       } else {
-        console.error('Failed to load projects from API');
+        console.error("Failed to load projects from API");
         setProjects([]);
       }
     } catch (error) {
-      console.error('Error loading projects:', error);
+      console.error("Error loading projects:", error);
       setProjects([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const addProject = async (projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt' | 'images'>) => {
+  const addProject = async (
+    projectData: Omit<Project, "id" | "createdAt" | "updatedAt" | "images">
+  ) => {
     try {
-      const response = await fetch('/api/projects', {
-        method: 'POST',
+      const response = await fetch("/api/projects", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(projectData),
       });
@@ -70,30 +74,30 @@ export function useProjects() {
         const newProject = await response.json();
         const transformedProject = {
           ...newProject,
-          techStack: JSON.parse(newProject.techStack || '[]'),
+          techStack: JSON.parse(newProject.techStack || "[]"),
         };
         await loadProjects(); // Reload all projects to ensure consistency
         return transformedProject;
       } else {
-        throw new Error('Failed to create project');
+        throw new Error("Failed to create project");
       }
     } catch (error) {
-      console.error('Error adding project:', error);
+      console.error("Error adding project:", error);
       throw error;
     }
   };
 
   const updateProject = async (id: number, updates: Partial<Project>) => {
     try {
-      const project = projects.find(p => p.id === id);
+      const project = projects.find((p) => p.id === id);
       if (!project) {
-        throw new Error('Project not found');
+        throw new Error("Project not found");
       }
 
       const response = await fetch(`/api/projects/${project.slug}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updates),
       });
@@ -101,68 +105,68 @@ export function useProjects() {
       if (response.ok) {
         await loadProjects(); // Reload all projects to ensure consistency
       } else {
-        throw new Error('Failed to update project');
+        throw new Error("Failed to update project");
       }
     } catch (error) {
-      console.error('Error updating project:', error);
+      console.error("Error updating project:", error);
       throw error;
     }
   };
 
   const deleteProject = async (id: number) => {
     try {
-      const project = projects.find(p => p.id === id);
+      const project = projects.find((p) => p.id === id);
       if (!project) {
-        throw new Error('Project not found');
+        throw new Error("Project not found");
       }
 
       const response = await fetch(`/api/projects/${project.slug}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (response.ok) {
         await loadProjects(); // Reload all projects to ensure consistency
       } else {
-        throw new Error('Failed to delete project');
+        throw new Error("Failed to delete project");
       }
     } catch (error) {
-      console.error('Error deleting project:', error);
+      console.error("Error deleting project:", error);
       throw error;
     }
   };
 
   const getProjectBySlug = (slug: string) => {
-    return projects.find(project => project.slug === slug);
+    return projects.find((project) => project.slug === slug);
   };
 
   const getFeaturedProjects = () => {
-    return projects.filter(project => project.featured);
+    return projects.filter((project) => project.featured);
   };
 
   const getProjectsByCategory = (category: string) => {
-    return projects.filter(project => project.category === category);
+    return projects.filter((project) => project.category === category);
   };
 
   const resetToMockData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/projects/reset', {
-        method: 'POST',
+      const response = await fetch("/api/projects/reset", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (response.ok) {
         // Reload projects after successful reset
         await loadProjects();
-        console.log('Database reset to mock data successfully');
+        console.log("Database reset to mock data successfully");
       } else {
-        console.error('Failed to reset database');
-        throw new Error('Failed to reset database');
+        console.error("Failed to reset database");
+        throw new Error("Failed to reset database");
       }
     } catch (error) {
-      console.error('Error resetting to mock data:', error);
+      console.error("Error resetting to mock data:", error);
       throw error;
     } finally {
       setLoading(false);

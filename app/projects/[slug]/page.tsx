@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -9,22 +9,19 @@ export default function ProjectPage() {
   const params = useParams();
   const slug = params.slug as string;
   const { getProjectBySlug, loading } = useProjects();
-  
+
   const project = getProjectBySlug(slug);
 
   if (loading) {
     return (
-      <div className="min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <nav className="mb-8">
-          <Link 
-            href="/"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
+      <div className="home-page">
+        <nav className="project-nav">
+          <Link href="/" className="project-nav__link">
             &larr; Back to Portfolio
           </Link>
         </nav>
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="text-2xl">Loading project...</div>
+        <div className="loading-screen">
+          <div className="loading-screen__text">Loading project...</div>
         </div>
       </div>
     );
@@ -32,18 +29,15 @@ export default function ProjectPage() {
 
   if (!project) {
     return (
-      <div className="min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <nav className="mb-8">
-          <Link 
-            href="/"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
+      <div className="home-page">
+        <nav className="project-nav">
+          <Link href="/" className="project-nav__link">
             &larr; Back to Portfolio
           </Link>
         </nav>
-        <div className="text-center py-12">
-          <h1 className="text-2xl font-bold mb-4">Project Not Found</h1>
-          <p className="text-gray-600 dark:text-gray-300">
+        <div className="project-not-found">
+          <h1 className="project-not-found__title">Project Not Found</h1>
+          <p className="project-not-found__text">
             The project you&apos;re looking for doesn&apos;t exist.
           </p>
         </div>
@@ -52,69 +46,63 @@ export default function ProjectPage() {
   }
 
   return (
-    <div className="min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="home-page">
       {/* Navigation */}
-      <nav className="mb-8">
-        <Link 
-          href="/"
-          className="text-blue-600 dark:text-blue-400 hover:underline"
-        >
+      <nav className="project-nav">
+        <Link href="/" className="project-nav__link">
           &larr; Back to Portfolio
         </Link>
       </nav>
 
       {/* Project Header */}
-      <header className="mb-12">
-        <div className="flex items-center gap-3 mb-4">
-          <span className={`px-3 py-1 text-sm rounded-full ${
-            project.category === 'HARDWARE' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-            project.category === 'WEB' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-            'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-          }`}>
+      <header className="project-header">
+        <div className="project-header__badges">
+          <span
+            className={`project-card__badge project-card__badge--${project.category.toLowerCase()}`}
+          >
             {project.category}
           </span>
           {project.featured && (
-            <span className="px-3 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+            <span className="project-card__badge project-card__badge--featured">
               Featured
             </span>
           )}
         </div>
-        
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          {project.title}
-        </h1>
-        
-        <p className="text-xl text-gray-600 dark:text-gray-300 mb-6 max-w-3xl">
-          {project.description}
-        </p>
+
+        <h1 className="project-header__title">{project.title}</h1>
+
+        <p className="project-header__description">{project.description}</p>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {project.techStack.map((tech, index) => (
-            <span key={index} className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm">
+        <div className="project-header__tech-stack">
+          {project.techStack.map((tech, techIndex) => (
+            <span
+              key={`tech-${techIndex}-${tech}`}
+              className="project-card__tech-tag"
+            >
               {tech}
             </span>
           ))}
         </div>
 
         {/* Links */}
-        <div className="flex gap-4">
+        <div className="project-header__actions">
           {project.githubUrl && (
-            <a 
+            <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-gray-900 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors"
+              className="btn btn--primary project-card__link--github"
             >
               View on GitHub
             </a>
           )}
           {project.demoUrl && (
-            <a 
+            <a
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn btn--secondary project-card__link--demo"
             >
               Live Demo
             </a>
@@ -123,38 +111,49 @@ export default function ProjectPage() {
       </header>
 
       {/* Project Content */}
-      <article className="max-w-4xl">
-        <div className="prose prose-lg dark:prose-invert max-w-none">
-          {project.content.split('\n').map((paragraph, index) => {
-            if (paragraph.startsWith('# ')) {
+      <article className="project-content">
+        <div className="project-content__markdown">
+          {project.content.split("\n").map((paragraph, paragraphIndex) => {
+            // Create a more robust key using content hash
+            const contentKey = `${paragraphIndex}-${paragraph
+              .slice(0, 10)
+              .replace(/\s+/g, "-")}`;
+
+            if (paragraph.startsWith("# ")) {
               return (
-                <h1 key={index} className="text-3xl font-bold mt-8 mb-4">
+                <h1 key={`h1-${contentKey}`} className="project-content__h1">
                   {paragraph.slice(2)}
                 </h1>
               );
-            } else if (paragraph.startsWith('## ')) {
+            } else if (paragraph.startsWith("## ")) {
               return (
-                <h2 key={index} className="text-2xl font-semibold mt-6 mb-3">
+                <h2 key={`h2-${contentKey}`} className="project-content__h2">
                   {paragraph.slice(3)}
                 </h2>
               );
-            } else if (paragraph.startsWith('### ')) {
+            } else if (paragraph.startsWith("### ")) {
               return (
-                <h3 key={index} className="text-xl font-semibold mt-4 mb-2">
+                <h3 key={`h3-${contentKey}`} className="project-content__h3">
                   {paragraph.slice(4)}
                 </h3>
               );
-            } else if (paragraph.startsWith('- ')) {
+            } else if (paragraph.startsWith("- ")) {
               return (
-                <ul key={index} className="list-disc ml-6 mb-4">
-                  <li>{paragraph.slice(2)}</li>
+                <ul key={`ul-${contentKey}`} className="project-content__list">
+                  <li className="project-content__list-item">
+                    {paragraph.slice(2)}
+                  </li>
                 </ul>
               );
-            } else if (paragraph.trim() === '') {
-              return <br key={index} />;
+            } else if (paragraph.trim() === "") {
+              // For empty paragraphs, use a unique identifier
+              return <br key={`br-${project.slug}-${paragraphIndex}`} />;
             } else {
               return (
-                <p key={index} className="mb-4 leading-relaxed">
+                <p
+                  key={`p-${contentKey}`}
+                  className="project-content__paragraph"
+                >
                   {paragraph}
                 </p>
               );
@@ -165,23 +164,24 @@ export default function ProjectPage() {
 
       {/* Project Images */}
       {project.images && project.images.length > 0 && (
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Project Images</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {project.images.map((image, index) => (
-              <div key={index} className="border rounded-lg overflow-hidden">
+        <section className="project-images">
+          <h2 className="project-images__title">Project Images</h2>
+          <div className="project-images__grid">
+            {project.images.map((image) => (
+              <div
+                key={`img-${project.slug}-${image.url.split("/").pop()}`}
+                className="project-images__item"
+              >
                 <Image
                   src={image.url}
-                  alt={image.alt || `${project.title} screenshot ${index + 1}`}
+                  alt={image.alt || `${project.title} screenshot`}
                   width={800}
                   height={600}
-                  className="w-full h-auto"
+                  className="project-images__img"
                 />
                 {image.caption && (
-                  <div className="p-4 bg-gray-50 dark:bg-gray-800">
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
-                      {image.caption}
-                    </p>
+                  <div className="project-images__caption">
+                    <p>{image.caption}</p>
                   </div>
                 )}
               </div>
@@ -191,13 +191,10 @@ export default function ProjectPage() {
       )}
 
       {/* Related Projects */}
-      <section className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Explore More Projects</h2>
-          <Link 
-            href="/"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
+      <section className="related-projects">
+        <div className="related-projects__content">
+          <h2 className="related-projects__title">Explore More Projects</h2>
+          <Link href="/" className="btn btn--primary">
             View All Projects
           </Link>
         </div>

@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
-import { mockProjects, mockSkills } from '../../../../lib/mockData';
+import { NextResponse } from "next/server";
+import { prisma } from "../../../../lib/prisma";
+import { mockProjects, mockSkills } from "../../../../lib/mockData";
+import { SkillCategory, Category } from "@prisma/client";
 
 export async function POST() {
   try {
@@ -10,11 +11,11 @@ export async function POST() {
 
     // Recreate skills from mock data
     await prisma.skill.createMany({
-      data: mockSkills.map(skill => ({
+      data: mockSkills.map((skill) => ({
         name: skill.name,
-        category: skill.category,
-        proficiency: skill.proficiency
-      }))
+        category: skill.category as SkillCategory,
+        proficiency: skill.proficiency,
+      })),
     });
 
     // Recreate projects from mock data
@@ -25,25 +26,25 @@ export async function POST() {
           slug: project.slug,
           description: project.description,
           content: project.content,
-          category: project.category,
+          category: project.category as Category,
           techStack: JSON.stringify(project.techStack),
           githubUrl: project.githubUrl,
-          demoUrl: project.demoUrl || null,
-          featured: project.featured
-        }
+          demoUrl: project.demoUrl ?? null,
+          featured: project.featured,
+        },
       });
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Database reset to mock data successfully',
+    return NextResponse.json({
+      success: true,
+      message: "Database reset to mock data successfully",
       projectsCount: mockProjects.length,
-      skillsCount: mockSkills.length
+      skillsCount: mockSkills.length,
     });
   } catch (error) {
-    console.error('Error resetting database:', error);
+    console.error("Error resetting database:", error);
     return NextResponse.json(
-      { error: 'Failed to reset database' },
+      { error: "Failed to reset database" },
       { status: 500 }
     );
   }

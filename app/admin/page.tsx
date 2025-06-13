@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
-import { useProjects, Project } from '../../lib/useProjects';
-import { Plus, Edit, Trash2, Save, X, RotateCcw } from 'lucide-react';
+import { useState } from "react";
+import { useProjects, Project } from "../../lib/useProjects";
+import { Plus, Edit, Trash2, Save, X, RotateCcw } from "lucide-react";
 
 interface ProjectFormData {
   title: string;
@@ -16,30 +16,30 @@ interface ProjectFormData {
   featured: boolean;
 }
 
-const PROJECT_CATEGORIES = ['HARDWARE', 'WEB', 'MOBILE'];
+const PROJECT_CATEGORIES = ["HARDWARE", "WEB", "MOBILE"];
 
 export default function AdminPage() {
-  const { 
-    projects, 
-    loading, 
-    addProject, 
-    updateProject, 
-    deleteProject, 
-    resetToMockData 
+  const {
+    projects,
+    loading,
+    addProject,
+    updateProject,
+    deleteProject,
+    resetToMockData,
   } = useProjects();
 
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<ProjectFormData>({
-    title: '',
-    slug: '',
-    description: '',
-    content: '',
-    category: 'WEB',
-    techStack: '',
-    githubUrl: '',
-    demoUrl: '',
-    featured: false
+    title: "",
+    slug: "",
+    description: "",
+    content: "",
+    category: "WEB",
+    techStack: "",
+    githubUrl: "",
+    demoUrl: "",
+    featured: false,
   });
 
   if (loading) {
@@ -52,15 +52,15 @@ export default function AdminPage() {
 
   const resetForm = () => {
     setFormData({
-      title: '',
-      slug: '',
-      description: '',
-      content: '',
-      category: 'WEB',
-      techStack: '',
-      githubUrl: '',
-      demoUrl: '',
-      featured: false
+      title: "",
+      slug: "",
+      description: "",
+      content: "",
+      category: "WEB",
+      techStack: "",
+      githubUrl: "",
+      demoUrl: "",
+      featured: false,
     });
     setEditingProject(null);
     setShowForm(false);
@@ -69,22 +69,27 @@ export default function AdminPage() {
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
 
     // Auto-generate slug when title changes
-    if (name === 'title') {
-      setFormData(prev => ({
+    if (name === "title") {
+      setFormData((prev) => ({
         ...prev,
-        slug: generateSlug(value)
+        slug: generateSlug(value),
       }));
     }
   };
@@ -97,19 +102,19 @@ export default function AdminPage() {
       description: project.description,
       content: project.content,
       category: project.category,
-      techStack: project.techStack.join(', '),
-      githubUrl: project.githubUrl || '',
-      demoUrl: project.demoUrl || '',
-      featured: project.featured
+      techStack: project.techStack.join(", "),
+      githubUrl: project.githubUrl || "",
+      demoUrl: project.demoUrl || "",
+      featured: project.featured,
     });
     setShowForm(true);
   };
 
   const handleSave = () => {
     const techStackArray = formData.techStack
-      .split(',')
-      .map(tech => tech.trim())
-      .filter(tech => tech.length > 0);
+      .split(",")
+      .map((tech) => tech.trim())
+      .filter((tech) => tech.length > 0);
 
     if (editingProject) {
       // Update existing project
@@ -122,7 +127,7 @@ export default function AdminPage() {
         techStack: techStackArray,
         githubUrl: formData.githubUrl || undefined,
         demoUrl: formData.demoUrl || undefined,
-        featured: formData.featured
+        featured: formData.featured,
       });
     } else {
       // Create new project
@@ -135,7 +140,7 @@ export default function AdminPage() {
         techStack: techStackArray,
         githubUrl: formData.githubUrl || undefined,
         demoUrl: formData.demoUrl || undefined,
-        featured: formData.featured
+        featured: formData.featured,
       });
     }
 
@@ -143,7 +148,7 @@ export default function AdminPage() {
   };
 
   const handleDelete = (projectId: number) => {
-    if (confirm('Are you sure you want to delete this project?')) {
+    if (confirm("Are you sure you want to delete this project?")) {
       deleteProject(projectId);
     }
   };
@@ -157,7 +162,11 @@ export default function AdminPage() {
           <div className="admin-page__actions">
             <button
               onClick={() => {
-                if (confirm('Reset all projects to original mock data? This will delete any custom projects.')) {
+                if (
+                  confirm(
+                    "Reset all projects to original mock data? This will delete any custom projects."
+                  )
+                ) {
                   resetToMockData();
                 }
               }}
@@ -182,146 +191,168 @@ export default function AdminPage() {
             <div className="modal__content">
               <div className="modal__header">
                 <h2 className="modal__title">
-                  {editingProject ? 'Edit Project' : 'Add New Project'}
+                  {editingProject ? "Edit Project" : "Add New Project"}
                 </h2>
-                <button
-                  onClick={resetForm}
-                  className="modal__close"
-                >
+                <button onClick={resetForm} className="modal__close">
                   <X size={20} />
                 </button>
               </div>
 
-              <form className="form-grid" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-                <div className="form-grid">
-                  {/* Title */}
-                  <div className="form-group">
-                    <label htmlFor="title" className="form-label">Title *</label>
-                    <input
-                      id="title"
-                      type="text"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleInputChange}
-                      required
-                      className="form-input"
-                    />
-                  </div>
-
-                  {/* Slug */}
-                  <div className="form-group">
-                    <label htmlFor="slug" className="form-label">Slug *</label>
-                    <input
-                      id="slug"
-                      type="text"
-                      name="slug"
-                      value={formData.slug}
-                      onChange={handleInputChange}
-                      required
-                      className="form-input"
-                    />
-                  </div>
-
-                  {/* Category */}
-                  <div className="form-group">
-                    <label htmlFor="category" className="form-label">Category *</label>
-                    <select
-                      id="category"
-                      name="category"
-                      value={formData.category}
-                      onChange={handleInputChange}
-                      required
-                      className="form-select"
-                    >
-                      {PROJECT_CATEGORIES.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Featured */}
-                  <div className="form-group">
-                    <label className="form-label">
+              <div className="modal__body">
+                <form
+                  id="project-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSave();
+                  }}
+                >
+                  <div className="form-content">
+                    {/* Title */}
+                    <div className="form-group">
+                      <label htmlFor="title" className="form-label">
+                        Title *
+                      </label>
                       <input
-                        id="featured"
-                        type="checkbox"
-                        name="featured"
-                        checked={formData.featured}
+                        id="title"
+                        type="text"
+                        name="title"
+                        value={formData.title}
                         onChange={handleInputChange}
-                        className="form-checkbox"
+                        required
+                        className="form-input"
                       />
-                      Featured Project
+                    </div>
+
+                    {/* Slug */}
+                    <div className="form-group">
+                      <label htmlFor="slug" className="form-label">
+                        Slug *
+                      </label>
+                      <input
+                        id="slug"
+                        type="text"
+                        name="slug"
+                        value={formData.slug}
+                        onChange={handleInputChange}
+                        required
+                        className="form-input"
+                      />
+                    </div>
+
+                    {/* Category */}
+                    <div className="form-group">
+                      <label htmlFor="category" className="form-label">
+                        Category *
+                      </label>
+                      <select
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        required
+                        className="form-select"
+                      >
+                        {PROJECT_CATEGORIES.map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Featured */}
+                    <div className="form-group">
+                      <label className="form-label">
+                        <input
+                          id="featured"
+                          type="checkbox"
+                          name="featured"
+                          checked={formData.featured}
+                          onChange={handleInputChange}
+                          className="form-checkbox"
+                        />
+                        Featured Project
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <div className="form-group">
+                    <label htmlFor="description" className="form-label">
+                      Description *
                     </label>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div className="form-group">
-                  <label htmlFor="description" className="form-label">Description *</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    required
-                    rows={3}
-                    className="form-textarea"
-                  />
-                </div>
-
-                {/* Tech Stack */}
-                <div className="form-group">
-                  <label htmlFor="techStack" className="form-label">Tech Stack (comma-separated)</label>
-                  <input
-                    id="techStack"
-                    type="text"
-                    name="techStack"
-                    value={formData.techStack}
-                    onChange={handleInputChange}
-                    placeholder="React, TypeScript, Node.js"
-                    className="form-input"
-                  />
-                </div>
-
-                <div className="form-grid">
-                  {/* GitHub URL */}
-                  <div className="form-group">
-                    <label htmlFor="githubUrl" className="form-label">GitHub URL</label>
-                    <input
-                      id="githubUrl"
-                      type="url"
-                      name="githubUrl"
-                      value={formData.githubUrl}
+                    <textarea
+                      id="description"
+                      name="description"
+                      value={formData.description}
                       onChange={handleInputChange}
+                      required
+                      rows={3}
+                      className="form-textarea"
+                    />
+                  </div>
+
+                  {/* Tech Stack */}
+                  <div className="form-group">
+                    <label htmlFor="techStack" className="form-label">
+                      Tech Stack (comma-separated)
+                    </label>
+                    <input
+                      id="techStack"
+                      type="text"
+                      name="techStack"
+                      value={formData.techStack}
+                      onChange={handleInputChange}
+                      placeholder="React, TypeScript, Node.js"
                       className="form-input"
                     />
                   </div>
 
-                  {/* Demo URL */}
-                  <div className="form-group">
-                    <label htmlFor="demoUrl" className="form-label">Demo URL</label>
-                    <input
-                      id="demoUrl"
-                      type="url"
-                      name="demoUrl"
-                      value={formData.demoUrl}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-                </div>
+                  <div className="form-grid">
+                    {/* GitHub URL */}
+                    <div className="form-group">
+                      <label htmlFor="githubUrl" className="form-label">
+                        GitHub URL
+                      </label>
+                      <input
+                        id="githubUrl"
+                        type="url"
+                        name="githubUrl"
+                        value={formData.githubUrl}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
 
-                {/* Content */}
-                <div className="form-group">
-                  <label htmlFor="content" className="form-label">Content (Markdown) *</label>
-                  <textarea
-                    id="content"
-                    name="content"
-                    value={formData.content}
-                    onChange={handleInputChange}
-                    required
-                    rows={10}
-                    placeholder="# Project Title
+                    {/* Demo URL */}
+                    <div className="form-group">
+                      <label htmlFor="demoUrl" className="form-label">
+                        Demo URL
+                      </label>
+                      <input
+                        id="demoUrl"
+                        type="url"
+                        name="demoUrl"
+                        value={formData.demoUrl}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="form-group">
+                    <label htmlFor="content" className="form-label">
+                      Content (Markdown) *
+                    </label>
+                    <textarea
+                      id="content"
+                      name="content"
+                      value={formData.content}
+                      onChange={handleInputChange}
+                      required
+                      rows={10}
+                      placeholder="# Project Title
 
 ## Overview
 Describe your project here...
@@ -335,39 +366,46 @@ What problems did you solve?
 
 ## Results
 What was the outcome?"
-                    className="form-textarea form-textarea--large font-mono text-sm"
-                  />
-                </div>
+                      className="form-textarea form-textarea--large"
+                    />
+                  </div>
+                </form>
+              </div>
 
-                {/* Form Actions */}
-                <div className="form-actions">
-                  <button
-                    type="submit"
-                    className="btn btn--primary"
-                  >
-                    <Save size={20} />
-                    {editingProject ? 'Update Project' : 'Create Project'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={resetForm}
-                    className="btn btn--outline"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
+              <div className="modal__footer">
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="btn btn--outline"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="project-form"
+                  className="btn btn--primary"
+                >
+                  <Save size={20} />
+                  {editingProject ? "Update Project" : "Create Project"}
+                </button>
+              </div>
             </div>
           </div>
         )}
 
         {/* Projects List */}
         <div className="admin-page__projects-grid">
-          {projects.map(project => (
-            <div key={project.id} data-testid="project-item" className="project-card">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              data-testid="project-item"
+              className="project-card"
+            >
               <div className="project-card__header">
                 <div className="project-card__badges">
-                  <span className={`project-card__badge project-card__badge--${project.category.toLowerCase()}`}>
+                  <span
+                    className={`project-card__badge project-card__badge--${project.category.toLowerCase()}`}
+                  >
                     {project.category}
                   </span>
                   {project.featured && (
@@ -393,7 +431,7 @@ What was the outcome?"
                   )}
                 </div>
               </div>
-              
+
               <div className="project-card__footer">
                 <div className="project-card__links">
                   {project.githubUrl && (
